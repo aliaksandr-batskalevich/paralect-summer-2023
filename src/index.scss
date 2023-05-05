@@ -1,0 +1,16 @@
+@import "/src/definitions";
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+
+  font-family: $font-main;
+  color: $color-font-black;
+  font-weight: 400;
+}
+
+.container {
+  max-width: 1116px;
+  margin: 0 auto;
+}

@@ -1,0 +1,45 @@
+@import "/src/definitions";
+
+a {
+  text-decoration: none;
+
+  .logoWrapper {
+    display: flex;
+    align-items: center;
+
+    .crossesWrapper {
+      position: relative;
+      height: 30px;
+      width: 30px;
+
+      > div {
+        width: 39.36px;
+        height: 15.47px;
+        background-color: $color-font-blue;
+        border-radius: 50%;
+
+        position: absolute;
+        left: -5.7px;
+        top: 6.28px;
+      }
+
+      > div:first-child {
+        transform: rotate(-44.78deg);
+      }
+
+      > div:last-child {
+        transform: rotate(-134.78deg);
+      }
+
+    }
+
+    .logoTitle {
+      margin-left: 7.58px;
+      font-family: $font-logo;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 36px;
+      letter-spacing: -0.02em;
+    }
+  }
+}

@@ -1,0 +1,25 @@
+@import "/src/definitions";
+
+.headerWrapper {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  background-color: $color-lists-background;
+
+
+  > div {
+    display: flex;
+    align-items: center;
+    height: $height-header;
+
+    .flexWrapper {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+
+      > div:last-child {
+        flex-grow: 1;
+      }
+    }
+  }
+}
