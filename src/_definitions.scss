@@ -1,9 +1,13 @@
-
 // COLORS
-$color-main-background: #F5F5F5;
-$color-lists-background: #FFFFFF;
-$color-font-black: #232134;
-$color-font-blue: #5E96FC;
+$color-background-white: #FFFFFF;
+$color-black: #232134;
+
+$color-blue-500: #5E96FC;
+
+$color-background-grey: #F5F5F5;
+$color-grey-200: #EAEBED;
+$color-grey-500: #ACADB9;
+$color-grey-600: #7B7C88;
 
 // FONTS
 $font-main: Inter;
@@ -11,3 +15,41 @@ $font-logo: Poppins;
 
 // SIZES
 $height-header: 84px;
+$width-vacancy-item: 773px;
+
+// LISTS STYLES
+$padding-wrapper-vacancy-list: 24px;
+
+%list-root-style {
+  border: $color-grey-200 solid 1px;
+  border-radius: 12px;
+  background-color: $color-background-white;
+}
+
+%vacancy-lists-style {
+  @extend %list-root-style;
+  width: $width-vacancy-item;
+  padding: $padding-wrapper-vacancy-list;
+
+}
+
+// INPUTS STYLES
+%input-root-style {
+  border: 1px solid $color-grey-200;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+// BUTTONS STYLES
+%button-root-style {
+  border-radius: 8px;
+  background-color: $color-blue-500;
+
+  span {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    color: white;
+  }
+}

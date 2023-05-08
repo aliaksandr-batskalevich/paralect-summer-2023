@@ -9,7 +9,8 @@ import {setIsAuth} from "./bll/auth.reducer";
 import {getIsAuth} from "./bll/auth.selector";
 import {Main} from "./components/Main/Main";
 import {useEffect} from "react";
-import {readAccessToken} from "./utils/localStorage.functions";
+import {initFavoriteVacancyTC} from "./bll/favorites.reducer";
+import {LocalStorageApi} from "./dal/localStorage.api";
 
 function App() {
 
@@ -19,9 +20,12 @@ function App() {
     const isAuth = useSelector(getIsAuth);
 
     useEffect(() => {
-        readAccessToken() && dispatch(setIsAuth(true));
+        // update favoritesVacancies data in redux
+        LocalStorageApi.readAccessToken() && dispatch(setIsAuth(true));
+
+        dispatch(initFavoriteVacancyTC());
         dispatch(setIsAppInit(true));
-    });
+    }, []);
 
     return (
         isAppInit

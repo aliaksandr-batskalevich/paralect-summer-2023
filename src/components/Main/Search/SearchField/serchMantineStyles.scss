@@ -1,0 +1,26 @@
+@import "/src/definitions";
+
+.searchInput {
+
+  input {
+    @extend %input-root-style;
+    height: 48px;
+    // set line-height: 21px
+    line-height: 21px;
+  }
+}
+
+.searchButton {
+  @extend %button-root-style;
+  height: 32px;
+  width: 83px;
+
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+
+  &:active {
+    transform: translateY(-45%);
+  }
+}

@@ -1,0 +1,33 @@
+@import "/src/definitions";
+
+.emptyStateWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > *:not(:first-child) {
+    margin-top: 32px;
+  }
+
+  .logoWrapper {
+    // 124px(padding) + 80px  = 204px
+    margin-top: 80px;
+
+    img {
+      display: inline-block;
+      width: 240px;
+      height: 230.27px;
+    }
+  }
+
+  h2 {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29.05px;
+    color: $color-black;
+  }
+
+  button {
+
+  }
+}

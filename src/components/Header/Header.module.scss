@@ -2,9 +2,10 @@
 
 .headerWrapper {
   position: fixed;
+  z-index: 999;
   top: 0;
   width: 100vw;
-  background-color: $color-lists-background;
+  background-color: $color-background-white;
 
 
   > div {

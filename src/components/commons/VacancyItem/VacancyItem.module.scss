@@ -1,0 +1,103 @@
+@import "../../../definitions";
+
+.vacancyItemWrapper {
+  @extend %vacancy-lists-style;
+  margin-top: 16px;
+  position: relative;
+
+  h3 {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: $color-blue-500;
+    max-width: 700px;
+  }
+
+  .description, .town {
+    margin-top: 12px;
+  }
+
+  .description {
+    display: flex;
+    align-items: center;
+
+    .payment, .workType {
+      font-size: 16px;
+      line-height: 20px;
+    }
+
+    .payment {
+      font-weight: 600;
+    }
+
+    > p:not(:first-child)::before {
+      margin-left: 12px;
+      margin-right: 12px;
+      content: '•';
+      color: $color-grey-600;
+      font-family: Poppins;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 21px;
+    }
+  }
+
+  .town {
+    display: flex;
+    align-items: center;
+
+    font-size: 16px;
+    line-height: 19px;
+
+    &::before {
+      margin-right: 8px;
+      content: '';
+      display: inline-block;
+      height: 20px;
+      width: 20px;
+      background-image: url("../../../assets/images/location.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+  }
+
+  .favoriteRoot {
+    position: absolute;
+    z-index: 10;
+    right: $padding-wrapper-vacancy-list;
+    top: $padding-wrapper-vacancy-list;
+
+    cursor: pointer;
+  }
+
+  .isFavorite {
+
+    &::before {
+      content: '';
+      display: inline-block;
+      height: 24px;
+      width: 24px;
+      background-image: url("../../../assets/images/removeFavorite.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .isNotFavorite {
+
+    &::before {
+      content: '';
+      display: inline-block;
+      height: 24px;
+      width: 24px;
+      background-image: url("../../../assets/images/addFavorite.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+}

@@ -1,0 +1,25 @@
+@import '/src/definitions';
+
+.vacancyDetailWrapper {
+  @extend %vacancy-lists-style;
+
+  margin-top: 20px;
+
+  > div:not(:first-child) {
+    margin-top: 20px;
+  }
+
+  h4 {
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 20px;
+  }
+
+  p {
+    margin-top: 16px;
+    white-space: pre-wrap;
+
+    font-size: 16px;
+    line-height: 140%;
+  }
+}

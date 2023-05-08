@@ -1,3 +1,51 @@
-.filtersWrapper {
+@import "/src/definitions";
 
+.filtersWrapper {
+  @extend %list-root-style;
+  padding: 20px;
+  position: relative;
+  width: 315px;
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+
+    h3 {
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 20px;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    > div {
+      line-height: 0;
+    }
+
+    .branch {
+      margin-top: 32px;
+    }
+
+    label {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 19.36px;
+    }
+
+    input, select {
+      margin-top: 8px;
+    }
+
+    .branch {
+
+    }
+
+    .payment {
+      margin-top: 20px;
+    }
+
+  }
 }

@@ -1,7 +1,7 @@
 import {ThunkDispatchType} from "../utils/useAppDispatch.hook";
 import axios from "axios";
 import {HttpsApi} from "../dal/https.api";
-import {setAccessToken, setRefreshToken} from "../utils/localStorage.functions";
+import {LocalStorageApi} from "../dal/localStorage.api";
 
 export type AuthActionType = ReturnType<typeof setIsAuth>
     | ReturnType<typeof setIsAuthing>;
@@ -44,8 +44,8 @@ export const loginTC = (login: string, password: string, hr: number) => async (d
     try {
         dispatch(setIsAuthing(true));
         const response = await HttpsApi.login(login, password, hr);
-        setAccessToken(response.access_token);
-        setRefreshToken(response.refresh_token);
+        LocalStorageApi.setAccessToken(response.access_token);
+        LocalStorageApi.setRefreshToken(response.refresh_token);
         dispatch(setIsAuth(true));
         dispatch(setIsAuthing(false));
     } catch (error) {

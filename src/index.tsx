@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {HashRouter} from "react-router-dom";
 import {Provider} from "react-redux";
+import { MantineProvider } from '@mantine/core';
 import {store} from "./bll/store";
 
 const root = ReactDOM.createRoot(
@@ -14,7 +15,9 @@ root.render(
   // <React.StrictMode>
     <HashRouter>
         <Provider store={store}>
-            <App />
+            <MantineProvider withGlobalStyles withNormalizeCSS>
+                <App />
+            </MantineProvider>
         </Provider>
     </HashRouter>
   // </React.StrictMode>

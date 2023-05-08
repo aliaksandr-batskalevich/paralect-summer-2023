@@ -5,6 +5,7 @@ import Search from "./Search/Search";
 import {Favorites} from "./Favorites/Favorites";
 import {NotFound} from "./NotFound/NotFound";
 import {Login} from "./Login/Login";
+import {Vacancy} from "./Vacancy/Vacancy";
 
 type MainPropsType = {
     isAuth: boolean
@@ -18,6 +19,7 @@ export const Main: React.FC<MainPropsType> = ({isAuth}) => {
                 <Routes>
                     <Route path='/' element={<Navigate to='/search'/>}/>
                     <Route path='/search' element={<Search/>}/>
+                    <Route path='/search/:id' element={<Vacancy/>}/>
                     <Route path='/favorites' element={<Favorites/>}/>
                     <Route path='/login' element={<Login isAuth={isAuth} isHrDisabled={true}/>}/>
                     <Route path='/404' element={<NotFound/>}/>

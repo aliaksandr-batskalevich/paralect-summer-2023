@@ -4,7 +4,9 @@
 
    // rootComponentsWrappersStyle
   > div > div {
-    padding-top: $height-header;
+    padding-top: $height-header + 40px;
+    padding-bottom: 44px;
+
     min-height: 100vh;
   }
 }

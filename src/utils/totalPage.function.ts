@@ -1,0 +1,1 @@
+export const totalPageMaker = (total: number, countOnPage: number) => Math.ceil(total / countOnPage);

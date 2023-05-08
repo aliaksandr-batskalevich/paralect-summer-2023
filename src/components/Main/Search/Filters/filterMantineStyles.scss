@@ -1,0 +1,54 @@
+@import "/src/definitions";
+
+// SELECT
+.filterSelect {
+  input {
+    @extend %input-root-style;
+  }
+}
+
+.mantine-Select-rightSection {
+  pointer-events: none;
+}
+
+
+// INPUTS
+.filterInput {
+  input {
+    @extend %input-root-style;
+  }
+}
+
+%input-button-style {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+  margin-right: 12px;
+
+  > * {
+    display: none;
+  }
+}
+
+.mantine-NumberInput-controlUp {
+  @extend %input-button-style;
+  background-image: url("../../../../assets/images/incButton.png");
+}
+
+.mantine-NumberInput-controlDown {
+  @extend %input-button-style;
+  background-image: url("../../../../assets/images/decButton.png");
+}
+
+// BUTTON
+
+.submit {
+  @extend %button-root-style;
+  margin-top: 20px;
+  height: 40px;
+}

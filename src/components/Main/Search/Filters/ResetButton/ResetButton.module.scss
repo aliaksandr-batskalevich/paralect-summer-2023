@@ -1,0 +1,15 @@
+@import "/src/definitions";
+
+.ResetButtonWrapper {
+  color: $color-grey-500;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+
+  cursor: pointer;
+
+  &::after {
+    content: '✖';
+    margin-left: 4px;
+  }
+}

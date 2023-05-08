@@ -1,3 +1,14 @@
 .searchWrapper {
   display: flex;
+  align-items: flex-start;
+
+  .searchContent {
+    margin-left: 28px;
+
+    flex-grow: 1;
+    align-self: stretch;
+
+    display: flex;
+    flex-direction: column;
+  }
 }
