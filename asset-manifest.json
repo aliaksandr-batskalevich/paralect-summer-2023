@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/paralect-summer-2023/static/css/main.05db651f.css",
-    "main.js": "/paralect-summer-2023/static/js/main.7c1579fe.js",
+    "main.css": "/paralect-summer-2023/static/css/main.7ccc4427.css",
+    "main.js": "/paralect-summer-2023/static/js/main.846fc27f.js",
     "static/js/787.da285156.chunk.js": "/paralect-summer-2023/static/js/787.da285156.chunk.js",
     "static/media/spinnerPreloader.gif": "/paralect-summer-2023/static/media/spinnerPreloader.538a46681c0d1777619e.gif",
     "static/media/emptyLogo.png": "/paralect-summer-2023/static/media/emptyLogo.eb3718ec8ad83e76e69d.png",
     "index.html": "/paralect-summer-2023/index.html",
-    "main.05db651f.css.map": "/paralect-summer-2023/static/css/main.05db651f.css.map",
-    "main.7c1579fe.js.map": "/paralect-summer-2023/static/js/main.7c1579fe.js.map",
+    "main.7ccc4427.css.map": "/paralect-summer-2023/static/css/main.7ccc4427.css.map",
+    "main.846fc27f.js.map": "/paralect-summer-2023/static/js/main.846fc27f.js.map",
     "787.da285156.chunk.js.map": "/paralect-summer-2023/static/js/787.da285156.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.05db651f.css",
-    "static/js/main.7c1579fe.js"
+    "static/css/main.7ccc4427.css",
+    "static/js/main.846fc27f.js"
   ]
 }
