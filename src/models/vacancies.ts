@@ -186,7 +186,7 @@ export type VacancyToListType = Pick<VacancyType, 'id' | 'profession' | 'firm_na
     workTypeTitle: string
 };
 
-export type VacancyDetailType = Pick<VacancyType, 'work' | 'candidat' | 'compensation'>;
+export type VacancyDetailType = Pick<VacancyType, 'vacancyRichText'>;
 
 export type VacancyWithDetailType = {
     vacancyToList: VacancyToListType

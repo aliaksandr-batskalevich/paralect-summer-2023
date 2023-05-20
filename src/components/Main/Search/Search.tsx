@@ -1,134 +1,138 @@
 import React, {useEffect} from 'react';
 import s from './Search.module.scss';
 import {withAuthRedirect} from "../../../utils/withAuthRedirect.hoc";
-import {Filters} from "./Filters/Filters";
-import {SearchField} from "./SearchField/SearchField";
-import {Vacancies} from "./Vacancies/Vacancies";
+import {Filters, FormValuesType} from "./Filters/Filters";
+import {Vacancies} from "../../commons/Vacancies/Vacancies";
 import {useSelector} from "react-redux";
 import {
     getCountOnPage,
-    getCurrentFilter,
-    getCurrentPage, getIsSearchParamsInit,
     getIsVacanciesFetching,
     getIsVacanciesInit,
-    getKeyword,
     getTotalPage,
     getVacancies
 } from "../../../bll/vacancies.selector";
 import {useAppDispatch} from "../../../utils/useAppDispatch.hook";
 import {
     getCataloguesTC,
-    getVacanciesTC, setIsSearchParamsInit,
-    setIsVacanciesInit,
-    setKeyword,
-    setSearchCurrentPage
+    getVacanciesTC,
+    setIsVacanciesInit
 } from "../../../bll/vacancies.reducer";
 import {Preloader} from "../../commons/Preloader/Preloader";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import {SearchField} from "./SearchField/SearchField";
 
 const Search = () => {
 
+    const [searchParams, setSearchParams] = useSearchParams();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const isVacanciesInit = useSelector(getIsVacanciesInit);
-    const isSearchParamsInit = useSelector(getIsSearchParamsInit);
     const isVacanciesFetching = useSelector(getIsVacanciesFetching);
-    const currentFilter = useSelector(getCurrentFilter);
-    const keyword = useSelector(getKeyword);
-    const currentPage = useSelector(getCurrentPage);
+
+    const cataloguesQuery = searchParams.get('catalogues');
+    const paymentFromQuery = searchParams.get('paymentFrom');
+    const paymentToQuery = searchParams.get('paymentTo');
+    const keywordQuery = searchParams.get('keyword');
+    const pageQuery = searchParams.get('page');
+
+    const cataloguesFetch = cataloguesQuery ? +cataloguesQuery : null;
+    const paymentFromFetch = paymentFromQuery ? +paymentFromQuery : null;
+    const paymentToFetch = paymentToQuery ? +paymentToQuery : null;
+    const keywordFetch = keywordQuery;
+    const pageFetch = pageQuery ? +pageQuery : 1;
+
     const countOnPage = useSelector(getCountOnPage);
     const totalPage = useSelector(getTotalPage);
     const vacancies = useSelector(getVacancies);
 
-    const isLoading = !isSearchParamsInit || isVacanciesFetching;
+    const changeSearchParamsHandler = (values: Record<string, string | number>) => {
 
-    const setKeywordHandler = (keyword: string | null) => {
-        dispatch(setIsSearchParamsInit(false));
-        dispatch(setKeyword(keyword));
-    };
-    const setCurrentPageHandler = (currentPage: number) => {
-        dispatch(setSearchCurrentPage(currentPage));
+        for (const filtersValuesKey in values) {
+
+            const value = values[filtersValuesKey];
+
+            value === ''
+                ? searchParams.delete(filtersValuesKey)
+                : searchParams.set(filtersValuesKey, String(value));
+
+        }
+
+        setSearchParams(searchParams);
     };
 
-    // init page
+    const filterSubmitHandler = (values: FormValuesType) => {
+        changeSearchParamsHandler({...values, page: 1});
+    };
+
+    const filterResetHandler = () => {
+        setSearchParams();
+    };
+
+    const keywordSearchHandler = (keyword: string) => {
+        changeSearchParamsHandler({keyword, page: 1});
+    };
+
+    const pageChangeHandler = (page: number) => {
+        changeSearchParamsHandler({page});
+    };
+
+    // INIT PAGE
     useEffect(() => {
         if (!isVacanciesInit) {
             Promise.all([
                 dispatch(getCataloguesTC()),
-                dispatch(getVacanciesTC(
-                    currentFilter.branchKey,
-                    currentFilter.paymentFrom,
-                    currentFilter.paymentTo,
-                    keyword,
-                    currentPage,
-                    countOnPage
-                )),
+                dispatch(getVacanciesTC(cataloguesFetch, paymentFromFetch, paymentToFetch, keywordFetch, pageFetch, countOnPage)),
             ])
                 .then(response => {
-                    dispatch(setIsSearchParamsInit(true));
                     dispatch(setIsVacanciesInit(true));
+                })
+                .catch(reason => {
+                    const {status, message} = reason;
+                    navigate(`/error?status=${status}&message=${message}`);
                 });
         }
-    }, [isVacanciesInit, dispatch]);
+    }, [isVacanciesInit]);
 
-    // FETCHING vacancies by filters and keyword
+    // FETCHING BY SEARCH PARAMS
     useEffect(() => {
-        if (isVacanciesInit && !isSearchParamsInit) {
-
-            // set start page - 1 for fetching y new filter
-            const startPage = 1;
-            setCurrentPageHandler(startPage);
-
-            dispatch(getVacanciesTC(
-                currentFilter.branchKey,
-                currentFilter.paymentFrom,
-                currentFilter.paymentTo,
-                keyword,
-                startPage,
-                countOnPage
-            ))
-                .then(response => {
-                    dispatch(setIsSearchParamsInit(true));
+        if (isVacanciesInit) {
+            dispatch(getVacanciesTC(cataloguesFetch, paymentFromFetch, paymentToFetch, keywordFetch, pageFetch, countOnPage))
+                .catch(reason => {
+                    const {status, message} = reason;
+                    navigate(`/error?status=${status}&message=${message}`);
                 });
         }
-    }, [dispatch, currentFilter, keyword]);
-
-    // FETCHING vacancies by current page
-    useEffect(() => {
-        if (isVacanciesInit && isSearchParamsInit) {
-            dispatch(getVacanciesTC(
-                currentFilter.branchKey,
-                currentFilter.paymentFrom,
-                currentFilter.paymentTo,
-                keyword,
-                currentPage,
-                countOnPage
-            ));
-        }
-    }, [dispatch, currentPage, countOnPage]);
+    }, [searchParams]);
 
     return (
         isVacanciesInit
             ? <div className={s.searchWrapper}>
                 <Filters
-                    currentFilter={currentFilter}
-                    isLoading={isLoading}
+                    isLoading={isVacanciesFetching}
+
+                    catalogues={cataloguesQuery ? +cataloguesQuery : null}
+                    paymentFrom={paymentFromQuery ? +paymentFromQuery : null}
+                    paymentTo={paymentToQuery ? +paymentToQuery : null}
+
+                    filterSubmit={filterSubmitHandler}
+                    filterReset={filterResetHandler}
                 />
                 <div className={s.searchContent}>
                     <SearchField
-                        keyword={keyword}
-                        setKeyword={setKeywordHandler}
-                        isLoading={isLoading}
-                    />
-                    {isSearchParamsInit
-                        ? <Vacancies
-                            vacancies={vacancies}
-                            isVacanciesFetching={isVacanciesFetching}
+                        isLoading={isVacanciesFetching}
+                        keyword={keywordQuery}
 
-                            currentPage={currentPage}
-                            totalPage={totalPage}
-                            setCurrentPage={setCurrentPageHandler}
-                        />
-                        : <Preloader/>}
+                        keywordSearch={keywordSearchHandler}
+                    />
+                    <Vacancies
+                        vacancies={vacancies}
+                        isVacanciesFetching={isVacanciesFetching}
+
+                        currentPage={pageQuery ? +pageQuery : 1}
+                        totalPage={totalPage}
+                        pageChange={pageChangeHandler}
+                    />
                 </div>
             </div>
             : <Preloader/>

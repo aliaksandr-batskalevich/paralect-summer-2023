@@ -23,7 +23,7 @@ export class LocalStorageApi {
 
     static addFavoriteVacancy(id: number) {
         let favoritesVacancies = JSON.parse(localStorage.getItem('favorites') || '[]') as Array<number>;
-        favoritesVacancies.length < 500 && favoritesVacancies.push(id);
+        favoritesVacancies.length < 500 && favoritesVacancies.unshift(id);
         localStorage.setItem('favorites', JSON.stringify(favoritesVacancies));
         return favoritesVacancies;
     }

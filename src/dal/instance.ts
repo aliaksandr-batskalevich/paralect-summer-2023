@@ -1,4 +1,5 @@
 import axios from 'axios';
+import HttpsApi from './https.api';
 import {LocalStorageApi} from "./localStorage.api";
 
 const baseURL = 'https://startup-summer-2023-proxy.onrender.com/2.0/';
@@ -19,3 +20,35 @@ instance.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${accessToken}`;
     return config;
 });
+
+instance.interceptors.response.use(
+    (config) => {
+        return config
+    },
+    async (error) => {
+        const originalRequest = error.config;
+        if (error.response?.status === 410 && !error.config._isRetry) {
+            originalRequest._isRetry = true;
+            try {
+                const refreshToken = LocalStorageApi.readRefreshToken();
+                if (!refreshToken) {
+                    throw new Error('Refresh token not founded!');
+                }
+
+                const response = await HttpsApi.refresh(refreshToken);
+                LocalStorageApi.setAccessToken(response.access_token);
+                LocalStorageApi.setRefreshToken(response.refresh_token);
+
+                return instance.request(originalRequest);
+            } catch (error) {
+                console.log('RefreshToken expired!');
+            }
+        }
+
+        // is status !== 401 or status 401 after refresh
+        throw error;
+    });
+
+export default instance;
+
+export const refreshInstance = axios.create(axiosOptions);

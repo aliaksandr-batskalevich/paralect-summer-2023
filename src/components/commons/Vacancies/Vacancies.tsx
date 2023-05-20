@@ -1,13 +1,13 @@
 import React from 'react';
 import s from './Vacancies.module.scss';
 import {useSelector} from "react-redux";
-import {useAppDispatch} from "../../../../utils/useAppDispatch.hook";
-import {Preloader} from "../../../commons/Preloader/Preloader";
-import {VacancyItem} from "../../../commons/VacancyItem/VacancyItem";
-import {getFavoritesIds} from "../../../../bll/favorites.selector";
-import {addFavoriteVacancyTC, removeFavoriteVacancyTC} from "../../../../bll/favorites.reducer";
-import {VacancyToListType} from "../../../../models/vacancies";
-import {EmptyState} from "../../../commons/EmptyState/EmptyState";
+import {useAppDispatch} from "../../../utils/useAppDispatch.hook";
+import {Preloader} from "../Preloader/Preloader";
+import {VacancyItem} from "../VacancyItem/VacancyItem";
+import {getFavoritesIds} from "../../../bll/favorites.selector";
+import {addFavoriteVacancyTC, removeFavoriteVacancyTC} from "../../../bll/favorites.reducer";
+import {VacancyToListType} from "../../../models/vacancies";
+import {EmptyState} from "../EmptyState/EmptyState";
 import {Pagination} from "@mantine/core";
 
 type VacanciesPropsType = {
@@ -16,7 +16,8 @@ type VacanciesPropsType = {
 
     currentPage: number
     totalPage: number | null
-    setCurrentPage: (currentPage: number) => void
+
+    pageChange: (page: number) => void
 }
 
 export const Vacancies: React.FC<VacanciesPropsType> = ({
@@ -24,7 +25,7 @@ export const Vacancies: React.FC<VacanciesPropsType> = ({
                                                             vacancies,
                                                             currentPage,
                                                             totalPage,
-                                                            setCurrentPage,
+                                                            pageChange,
                                                         }) => {
 
     const dispatch = useAppDispatch();
@@ -48,8 +49,6 @@ export const Vacancies: React.FC<VacanciesPropsType> = ({
         />
     });
 
-    console.log(totalPage);
-
     return (
         <div className={s.vacanciesWrapper}>
             {isVacanciesFetching
@@ -57,12 +56,12 @@ export const Vacancies: React.FC<VacanciesPropsType> = ({
                 : vacancies.length
                     ? <div>{vacanciesToRender}</div>
                     : <EmptyState/>}
-            {!!totalPage && <Pagination
+            {!!totalPage && !!vacancies.length && <Pagination
                 className={s.pagination}
                 siblings={2}
                 total={totalPage}
                 value={currentPage}
-                onChange={setCurrentPage}
+                onChange={pageChange}
                 disabled={isVacanciesFetching}
             />}
         </div>

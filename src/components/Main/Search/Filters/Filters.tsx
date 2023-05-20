@@ -3,50 +3,44 @@ import s from './Filters.module.scss';
 import './filterMantineStyles.scss';
 import {useSelector} from "react-redux";
 import {getCataloguesBranches} from "../../../../bll/vacancies.selector";
-import {useAppDispatch} from "../../../../utils/useAppDispatch.hook";
-import {FilterType, setCurrentFilter, setIsSearchParamsInit} from "../../../../bll/vacancies.reducer";
 import {Button, NumberInput, Select, SelectItem} from '@mantine/core';
 import {ResetButton} from "./ResetButton/ResetButton";
 import {useForm} from "@mantine/form";
 import selectIcon from '../../../../assets/images/selectIcon.png';
 
-type FormValuesType = {
-    branches: string,
+export type FormValuesType = {
+    catalogues: string,
     paymentFrom: number | '',
     paymentTo: number | '',
 };
 
 type FiltersPropsType = {
-    currentFilter: FilterType
+    catalogues: number | null
+    paymentFrom: number | null
+    paymentTo: number | null
     isLoading: boolean
+
+    filterSubmit: (values: FormValuesType) => void
+    filterReset: () => void
 };
 
 const converter = (value: number | null): string => value ? String(value) : '';
 
-export const Filters: React.FC<FiltersPropsType> = ({currentFilter, isLoading}) => {
-
-    const dispatch = useAppDispatch();
+export const Filters: React.FC<FiltersPropsType> = ({
+                                                        catalogues,
+                                                        paymentFrom,
+                                                        paymentTo,
+                                                        isLoading,
+                                                        filterSubmit,
+                                                        filterReset,
+                                                    }) => {
 
     const cataloguesBranches = useSelector(getCataloguesBranches);
 
     const initialValues: FormValuesType = {
-        branches: converter(currentFilter.branchKey),
-        paymentFrom: currentFilter.paymentFrom || '',
-        paymentTo: currentFilter.paymentTo || '',
-    };
-
-    const onSubmit = (values: FormValuesType) => {
-
-        // blocking the application of the same filter
-        const condition = converter(currentFilter.branchKey) === values.branches
-            && (currentFilter.paymentFrom || '') === values.paymentFrom
-            && (currentFilter.paymentTo || '') === values.paymentTo;
-
-        if (!condition) {
-            dispatch(setIsSearchParamsInit(false));
-            dispatch(setCurrentFilter(+values.branches || null, values.paymentFrom || null, values.paymentTo || null));
-        }
-
+        catalogues: converter(catalogues),
+        paymentFrom: paymentFrom || '',
+        paymentTo: paymentTo || '',
     };
 
     const form = useForm({
@@ -54,22 +48,17 @@ export const Filters: React.FC<FiltersPropsType> = ({currentFilter, isLoading}) 
     });
 
     const resetFormHandler = () => {
-
-        // blocking the application of the same filter
-        const condition = form.values.branches === ''
-            && form.values.paymentFrom === ''
-            && form.values.paymentTo === '';
-
-        if (!condition) {
-            form.reset();
-            dispatch(setIsSearchParamsInit(false));
-            dispatch(setCurrentFilter(null, null, null));
-        }
+            form.setValues({
+                catalogues: '',
+                paymentFrom: '',
+                paymentTo: '',
+            });
+            filterReset();
     };
 
-    const optionsToRender = cataloguesBranches.map(branch => ({
-        value: String(branch.key),
-        label: branch.titleTrimmed
+    const optionsToRender = cataloguesBranches.map(catalog => ({
+        value: String(catalog.key),
+        label: catalog.titleTrimmed
     } as SelectItem));
 
 
@@ -79,19 +68,21 @@ export const Filters: React.FC<FiltersPropsType> = ({currentFilter, isLoading}) 
                 <h3>Фильтры</h3>
                 <ResetButton disabled={isLoading} onclick={resetFormHandler}/>
             </div>
-            <form onSubmit={form.onSubmit(onSubmit)}>
+            <form onSubmit={form.onSubmit(filterSubmit)}>
                 <div className={s.branch}>
                     <Select
+                        data-elem='industry-select'
                         className={'filterSelect'}
                         label='Отрасль'
                         placeholder='Выберите отрасль'
                         data={optionsToRender}
                         rightSection={<img className={s.selectIcon} src={selectIcon} alt="selectIcon"/>}
-                        {...form.getInputProps('branches')}
+                        {...form.getInputProps('catalogues')}
                     />
                 </div>
                 <div className={s.payment}>
                     <NumberInput
+                        data-elem='salary-from-input'
                         label={'Оклад'}
                         className={'filterInput'}
                         placeholder='От'
@@ -100,6 +91,7 @@ export const Filters: React.FC<FiltersPropsType> = ({currentFilter, isLoading}) 
                         {...form.getInputProps('paymentFrom')}
                     />
                     <NumberInput
+                        data-elem='salary-to-input'
                         className={'filterInput'}
                         placeholder='До'
                         min={+form.values.paymentFrom || 0}
@@ -107,6 +99,7 @@ export const Filters: React.FC<FiltersPropsType> = ({currentFilter, isLoading}) 
                     />
                 </div>
                 <Button
+                    data-elem='search-button'
                     className={'submit'}
                     loading={isLoading}
                     type='submit'

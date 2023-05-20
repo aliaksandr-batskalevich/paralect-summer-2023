@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import parse from 'html-react-parser';
 import s from './Vacancy.module.scss';
 import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch} from "../../../utils/useAppDispatch.hook";
@@ -9,7 +10,6 @@ import {Preloader} from "../../commons/Preloader/Preloader";
 import {VacancyItem} from "../../commons/VacancyItem/VacancyItem";
 import {getFavoritesIds} from "../../../bll/favorites.selector";
 import {addFavoriteVacancyTC, removeFavoriteVacancyTC} from "../../../bll/favorites.reducer";
-import {VacancyDetail} from "./VacancyDetail/VacancyDetail";
 
 export const Vacancy = () => {
 
@@ -33,7 +33,8 @@ export const Vacancy = () => {
 
         dispatch(getVacancyTC(+id!))
             .catch(reason => {
-                navigate(`/404?message=${reason}`);
+                const {status, message} = reason;
+                navigate(`/error?status=${status}&message=${message}`);
             });
 
         return () => {
@@ -48,13 +49,13 @@ export const Vacancy = () => {
             : <div className={s.vacancyWrapper}>
                 {vacancy && <>
                     <VacancyItem
-                    {...vacancy.vacancyToList}
-                    isFavorite={isFavorite!}
-                    onClickFavorites={onClickFavoritesHandler}
-                />
-                    <VacancyDetail
-                        {...vacancy.detail}
+                        {...vacancy.vacancyToList}
+                        isFavorite={isFavorite!}
+                        onClickFavorites={onClickFavoritesHandler}
                     />
+                    <div className={s.vacancyDetailWrapper}>
+                        {parse(vacancy.detail.vacancyRichText)}
+                    </div>
                 </>}
             </div>
     );

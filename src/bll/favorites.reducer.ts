@@ -1,9 +1,9 @@
 import {ThunkDispatchType} from "../utils/useAppDispatch.hook";
 import {LocalStorageApi} from "../dal/localStorage.api";
-import {HttpsApi} from "../dal/https.api";
-import axios from "axios";
+import HttpsApi from "../dal/https.api";
 import {VacancyType} from "../models/vacancies";
 import {totalPageMaker} from "../utils/totalPage.function";
+import {fetchErrorHandler} from "../utils/fetchErrorHandler.function";
 
 export type FavoritesActionType = ReturnType<typeof setFavorites>
     | ReturnType<typeof setIsFavoritesFetching>
@@ -89,31 +89,45 @@ export const removeFavoriteVacancyTC = (id: number) => (dispatch: ThunkDispatchT
     dispatch(setFavorites(updatedFavoritesVacancies));
 };
 
-export const getFavoriteVacanciesTC = (countOnPage: number, currentPage: number) => async (dispatch: ThunkDispatchType) => {
+// UTILS FOR SORT FAVORITES VACANCIES
+const idsToFetchMaker = (idsArr: Array<number>, count: number, page: number): Array<number> => {
+    const startIndex = (page - 1) * count;
+    const endIndex = page * count;
+    const fetchIds = idsArr.slice(startIndex, endIndex);
+    
+    return fetchIds;
+};
+const vacanciesSorter = (sample: Array<number>, vacancies: Array<VacancyType>): Array<VacancyType> => {
+    const vacanciesSort = [] as Array<VacancyType>;
+    for (let sampleId of sample) {
+        const vacancy = vacancies.find(v => v.id === sampleId);
+        vacancy && vacanciesSort.push(vacancy);
+    }
+    return vacanciesSort;
+};
+
+export const getFavoriteVacanciesTC = (favoritesIds: Array<number>, countOnPage: number, currentPage: number) => async (dispatch: ThunkDispatchType) => {
     try {
         dispatch(setIsFavoritesFetching(true));
-        const ids = LocalStorageApi.getFavoritesVacancies();
 
-        if (ids.length) {
-            const response = await HttpsApi.getFavoriteVacancies(ids, countOnPage, currentPage);
-            const totalPage = totalPageMaker(ids.length, countOnPage);
+        if (favoritesIds.length) {
+            const totalPage = totalPageMaker(favoritesIds.length, countOnPage);
             dispatch(setTotalFavoritesPage(totalPage));
-            dispatch(setFavoritesVacancies(response.objects));
+            if (currentPage > totalPage) currentPage = totalPage;
+            
+            const fetchIds = idsToFetchMaker(favoritesIds, countOnPage, currentPage);
+
+            const response = await HttpsApi.getFavoriteVacancies(fetchIds, 4, 0);
+            const favoritesFromServer = response.objects;
+
+            const favoritesSort = vacanciesSorter(fetchIds, favoritesFromServer);
+
+            dispatch(setFavoritesVacancies(favoritesSort));
         }
 
         dispatch(setIsFavoritesFetching(false));
     } catch (error) {
-        let errorMessage: string;
-        if (axios.isAxiosError(error)) {
-            errorMessage = error.response
-                ? error.response.data.error.message
-                : error.message;
-
-        } else {
-            //@ts-ignore
-            errorMessage = error.message;
-        }
-        console.log(errorMessage);
+        const errorMessage = fetchErrorHandler(error);
         dispatch(setIsFavoritesFetching(false));
         return Promise.reject(errorMessage);
     }

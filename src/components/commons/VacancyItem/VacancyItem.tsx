@@ -38,16 +38,23 @@ export const VacancyItem = (props: VacancyItemPropsType) => {
         : `${s.favoriteRoot} ${s.isNotFavorite}`;
 
     return (
-        <div className={s.vacancyItemWrapper}>
+        <div
+            data-elem={`vacancy-${id}`}
+            className={s.vacancyItemWrapper}
+        >
             <NavLink to={`/search/${id}/`}>
-                <h3>{`${profession} (${firm_name})`}</h3>
+                <h3>{profession}</h3>
             </NavLink>
             <div className={s.description}>
                 <p className={s.payment}>{paymentToRender}</p>
                 <p className={s.workType}>{workTypeTitle}</p>
             </div>
             <div className={s.town}>{townTitle}</div>
-            <div className={favoriteClassName} onClick={onClickFavoritesHandler}/>
+            <div
+                data-elem={`vacancy-${id}-shortlist-button`}
+                className={favoriteClassName}
+                onClick={onClickFavoritesHandler}
+            />
         </div>
     );
 };

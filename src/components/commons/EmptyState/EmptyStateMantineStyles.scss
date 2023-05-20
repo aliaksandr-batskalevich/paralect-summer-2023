@@ -1,0 +1,21 @@
+@import "/src/definitions";
+
+  .empty-state-button {
+    @extend %button-root-style;
+    background-color: $color-blue-100;
+    height: 42px;
+    width: 164px;
+
+    span {
+      font-family: 'Open Sans';
+      color: $color-blue-600;
+      line-height: 155%;
+      font-weight: 600;
+    }
+
+    &:hover {
+      span {
+        color: white;
+      }
+    }
+  }

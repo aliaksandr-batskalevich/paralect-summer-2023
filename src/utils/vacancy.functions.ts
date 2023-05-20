@@ -11,9 +11,3 @@ export const vacancyToListMaker = (fullVacancy: VacancyType): VacancyToListType 
     payment_to: fullVacancy.payment_to,
     currency: fullVacancy.currency,
 });
-
-export const detailVacancyMaker = (fullVacancy: VacancyType): VacancyDetailType => ({
-    work: fullVacancy.work,
-    candidat: fullVacancy.candidat,
-    compensation: fullVacancy.compensation,
-});

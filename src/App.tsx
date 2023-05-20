@@ -20,7 +20,7 @@ function App() {
     const isAuth = useSelector(getIsAuth);
 
     useEffect(() => {
-        // update favoritesVacancies data in redux
+
         LocalStorageApi.readAccessToken() && dispatch(setIsAuth(true));
 
         dispatch(initFavoriteVacancyTC());

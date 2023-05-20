@@ -1,0 +1,6 @@
+@import "/src/definitions";
+
+.error-page-button-go-back {
+  @extend %button-root-style;
+  padding: 10px 20px;
+}

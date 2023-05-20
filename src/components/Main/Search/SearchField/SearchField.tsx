@@ -1,18 +1,17 @@
-import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react';
 import {Button, TextInput} from '@mantine/core';
-import { Search } from 'tabler-icons-react';
 import searchIcon from '../../../../assets/images/searchIcon.png';
 
 import s from './SearchField.module.scss';
 import './serchMantineStyles.scss';
 
 type SearchFieldPropsType = {
-    keyword: string | null
-    setKeyword: (keyword: string | null) => void
     isLoading: boolean
+    keyword: string | null
+    keywordSearch: (keyword: string) => void
 };
 
-export const SearchField: React.FC<SearchFieldPropsType> = ({keyword, setKeyword, isLoading}) => {
+export const SearchField: React.FC<SearchFieldPropsType> = ({keyword, keywordSearch, isLoading}) => {
 
     const [keywordValue, setKeywordValue] = useState<string>(keyword || '');
 
@@ -21,28 +20,21 @@ export const SearchField: React.FC<SearchFieldPropsType> = ({keyword, setKeyword
     };
 
     const searchOnClickHandler = () => {
-        const newKeyword = keywordValue.trim() || null;
-
-        if (newKeyword === keyword) {
-            return;
-        }
-
-        if (!newKeyword) {
-            setKeyword(null);
-            return;
-        }
-
-        setKeyword(newKeyword);
+        keywordSearch(keywordValue.trim());
     };
 
     const onKeyDownInputHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         event.key === 'Enter' && searchOnClickHandler();
     };
 
+    useEffect(() => {
+        setKeywordValue(keyword || '');
+    }, [keyword]);
 
     return (
         <div className={s.searchFieldWrapper}>
             <TextInput
+                data-elem='search-input'
                 className={'searchInput'}
                 // icon={<Search/>} - does not match!!!
                 icon={<img src={searchIcon} alt="searchIcon"/>}
@@ -52,6 +44,7 @@ export const SearchField: React.FC<SearchFieldPropsType> = ({keyword, setKeyword
                 onKeyDown={onKeyDownInputHandler}
             />
             <Button
+                data-elem='search-button'
                 className={'searchButton'}
                 disabled={isLoading}
                 type='button'
