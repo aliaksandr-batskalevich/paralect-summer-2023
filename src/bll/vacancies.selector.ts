@@ -28,7 +28,7 @@ export const getVacancyWithDetail = createSelector(getVacancyFull, (fullVacancy:
     const vacancyWithDetail = {
         vacancyToList: vacancyToListMaker(fullVacancy),
         detail: {vacancyRichText: fullVacancy.vacancyRichText},
-    }
+    };
 
     return vacancyWithDetail;
 });

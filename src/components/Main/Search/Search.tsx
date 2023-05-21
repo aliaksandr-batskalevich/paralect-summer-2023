@@ -131,6 +131,7 @@ const Search = () => {
 
                         currentPage={pageQuery ? +pageQuery : 1}
                         totalPage={totalPage}
+
                         pageChange={pageChangeHandler}
                     />
                 </div>

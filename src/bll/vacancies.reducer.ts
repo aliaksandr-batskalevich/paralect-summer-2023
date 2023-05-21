@@ -56,6 +56,7 @@ export const vacanciesReducer = (state: VacanciesStateType = vacanciesInitState,
     }
 };
 
+// ACTION CREATORS
 export const setIsVacanciesInit = (isInit: boolean) => {
     return {
         type: 'VACANCIES_SET_IS_VACANCIES_INIT',
@@ -99,7 +100,7 @@ export const setVacancy = (vacancy: VacancyType | null) => {
     } as const;
 };
 
-
+// THUNK CREATORS
 export const getCataloguesTC = () => async (dispatch: ThunkDispatchType) => {
     try {
         const catalogues = await HttpsApi.getCatalogues();

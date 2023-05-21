@@ -45,6 +45,25 @@ export const favoritesReducer = (state: FavoritesStateType = favoritesInitState,
             return state;
     }
 };
+
+// UTILS FOR SORT FAVORITES VACANCIES
+const idsToFetchMaker = (idsArr: Array<number>, count: number, page: number): Array<number> => {
+    const startIndex = (page - 1) * count;
+    const endIndex = page * count;
+    const fetchIds = idsArr.slice(startIndex, endIndex);
+
+    return fetchIds;
+};
+const vacanciesSorter = (sample: Array<number>, vacancies: Array<VacancyType>): Array<VacancyType> => {
+    const vacanciesSort = [] as Array<VacancyType>;
+    for (let sampleId of sample) {
+        const vacancy = vacancies.find(v => v.id === sampleId);
+        vacancy && vacanciesSort.push(vacancy);
+    }
+    return vacanciesSort;
+};
+
+// ACTION CREATORS
 const setIsFavoritesFetching = (isFavoritesFetching: boolean) => {
     return {
         type: 'FAVORITES_SET_IS_FAVORITES_FETCHING',
@@ -76,6 +95,7 @@ export const setTotalFavoritesPage = (totalPage: number | null) => {
     } as const;
 };
 
+// THUNK CREATORS
 export const initFavoriteVacancyTC = () => (dispatch: ThunkDispatchType) => {
     const favoritesVacancies = LocalStorageApi.getFavoritesVacancies();
     dispatch(setFavorites(favoritesVacancies));
@@ -87,23 +107,6 @@ export const addFavoriteVacancyTC = (id: number) => (dispatch: ThunkDispatchType
 export const removeFavoriteVacancyTC = (id: number) => (dispatch: ThunkDispatchType) => {
     const updatedFavoritesVacancies = LocalStorageApi.removeFavoriteVacancy(id);
     dispatch(setFavorites(updatedFavoritesVacancies));
-};
-
-// UTILS FOR SORT FAVORITES VACANCIES
-const idsToFetchMaker = (idsArr: Array<number>, count: number, page: number): Array<number> => {
-    const startIndex = (page - 1) * count;
-    const endIndex = page * count;
-    const fetchIds = idsArr.slice(startIndex, endIndex);
-    
-    return fetchIds;
-};
-const vacanciesSorter = (sample: Array<number>, vacancies: Array<VacancyType>): Array<VacancyType> => {
-    const vacanciesSort = [] as Array<VacancyType>;
-    for (let sampleId of sample) {
-        const vacancy = vacancies.find(v => v.id === sampleId);
-        vacancy && vacanciesSort.push(vacancy);
-    }
-    return vacanciesSort;
 };
 
 export const getFavoriteVacanciesTC = (favoritesIds: Array<number>, countOnPage: number, currentPage: number) => async (dispatch: ThunkDispatchType) => {
