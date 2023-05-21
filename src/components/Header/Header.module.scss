@@ -7,11 +7,18 @@
   width: 100vw;
   background-color: $color-background-white;
 
+  @media screen and (max-width: $width-container-main){
+    position: absolute;
+  }
 
   > div {
     display: flex;
-    align-items: center;
     height: $height-header;
+
+    @media screen and (max-width: $width-tablet){
+      height: unset;
+      padding: 10px 10px;
+    }
 
     .flexWrapper {
       flex-grow: 1;

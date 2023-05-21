@@ -17,7 +17,10 @@ $font-logo: Poppins;
 
 // SIZES
 $height-header: 84px;
-$width-vacancy-item: 773px;
+
+$width-container-main: 1116px;
+$width-tablet: 768px;
+$width-mobile: 375px;
 
 // LISTS STYLES
 $padding-wrapper-vacancy-list: 24px;
@@ -30,7 +33,6 @@ $padding-wrapper-vacancy-list: 24px;
 
 %vacancy-lists-style {
   @extend %list-root-style;
-  width: $width-vacancy-item;
   padding: $padding-wrapper-vacancy-list;
 
 }

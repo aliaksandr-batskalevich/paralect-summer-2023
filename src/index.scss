@@ -11,6 +11,10 @@
 }
 
 .container {
-  max-width: 1116px;
+  max-width: $width-container-main;
   margin: 0 auto;
+
+  @media screen and (max-width: $width-container-main){
+    padding: 0 10px;
+  }
 }

@@ -5,8 +5,13 @@
   input {
     @extend %input-root-style;
     height: 48px;
-    // set line-height: 21px
     line-height: 21px;
+
+    @media screen and (max-width: $width-mobile) {
+      &::-webkit-input-placeholder {
+        font-size: 11px;
+      }
+    }
   }
 }
 
@@ -19,6 +24,16 @@
   top: 50%;
   right: 12px;
   transform: translateY(-50%);
+
+  @media screen and (max-width: $width-mobile) {
+    padding: 0;
+    width: 70px;
+
+    span {
+      font-size: 12px;
+      color: white;
+    }
+  }
 
   &:active {
     transform: translateY(-45%);

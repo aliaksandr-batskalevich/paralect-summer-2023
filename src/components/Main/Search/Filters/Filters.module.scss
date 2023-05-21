@@ -6,6 +6,32 @@
   position: relative;
   width: 315px;
 
+  @media screen and (max-width: $width-tablet){
+    width: 280px;
+    position: fixed;
+    left: -260px;
+    z-index: 100;
+    transition-duration: 1s;
+
+    &:hover {
+      left: 5px;
+    }
+
+    &::after {
+      padding: 3px;
+      content: '>>';
+      display: inline-block;
+      border: black solid 1px;
+      border-radius: 10%;
+      background-color: $color-background-white;
+      position: absolute;
+      right: -15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+  }
+
   .head {
     display: flex;
     justify-content: space-between;

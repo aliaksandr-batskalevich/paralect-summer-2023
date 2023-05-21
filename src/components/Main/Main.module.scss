@@ -6,7 +6,10 @@
   > div > div {
     padding-top: $height-header + 40px;
     padding-bottom: 44px;
-
     min-height: 100vh;
+
+    @media screen and (max-width: $width-tablet){
+      padding-top: 70px;
+    }
   }
 }

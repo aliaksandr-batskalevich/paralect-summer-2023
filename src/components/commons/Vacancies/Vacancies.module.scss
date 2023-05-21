@@ -4,9 +4,9 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
 
   .pagination {
     margin-top: 16px;
+    align-self: center;
   }
 }
